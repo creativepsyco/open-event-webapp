@@ -1,7 +1,6 @@
 /**
  * Created by championswimmer on 29/5/15.
  */
-
 var sessionsModule = angular.module('oe.sessions', ['ui.router']);
 
 sessionsModule.config(['$stateProvider', function($stateProvider) {
@@ -36,18 +35,24 @@ sessionsModule.controller('SessionsController',
             var end = DateUtils.getHourMin(session.timeend);
 
             return start + ' - ' + end;
-        }
+        };
 
         sc.showSession = function(session, event) {
-            $mdDialog.show(
-                $mdDialog.alert()
-                    .parent(angular.element(document.body))
-                    .title(session.title)
-                    .content(session.description)
-                    .ariaLabel(session.title)
-                    .ok('Close')
-                    .targetEvent(event)
-            );
-        }
+            $mdDialog.show({
+                controller: SessionDialogController,
+                templateUrl: 'app/components/sessions/sessiondialog.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                locals:
+                {thissession: session}
+            });
+            //SessionDialogController.$inject = ['$mdDialog']
+        };
 
     }]);
+
+sessionsModule.controller('SessionDialogController', ['$mdDialog', function($mdDialog, thissession) {
+
+}]);
+
+
