@@ -13,7 +13,7 @@ sessionsModule.config(['$stateProvider', function($stateProvider) {
 }]);
 
 sessionsModule.controller('SessionsController',
-    ['$sessionStorage', '$rootScope', 'ApiJsonFactory', function($sessionStorage, $rootScope, ApiJsonFactory) {
+    ['$mdDialog', '$sessionStorage', '$rootScope', 'ApiJsonFactory', function($mdDialog, $sessionStorage, $rootScope, ApiJsonFactory) {
         var sc = this;
         sc.$storage = $sessionStorage;
         if (typeof(sc.$storage.sessions) == 'undefined' || sc.$storage.sessions == null)
@@ -36,6 +36,18 @@ sessionsModule.controller('SessionsController',
             var end = DateUtils.getHourMin(session.timeend);
 
             return start + ' - ' + end;
+        }
+
+        sc.showSession = function(session, event) {
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .parent(angular.element(document.body))
+                    .title(session.title)
+                    .content(session.description)
+                    .ariaLabel(session.title)
+                    .ok('Close')
+                    .targetEvent(event)
+            );
         }
 
     }]);
