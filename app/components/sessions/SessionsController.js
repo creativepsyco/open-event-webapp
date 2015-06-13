@@ -1,8 +1,11 @@
 /**
  * Created by championswimmer on 29/5/15.
  */
+
+
 var sessionsModule = angular.module('oe.sessions', ['ui.router']);
 
+var singleSession = {};
 sessionsModule.config(['$stateProvider', function($stateProvider) {
     $stateProvider.state('/sessions', {
         url: '/sessions',
@@ -38,21 +41,24 @@ sessionsModule.controller('SessionsController',
         };
 
         sc.showSession = function(session, event) {
+            singleSession = session;
             $mdDialog.show({
-                controller: SessionDialogController,
+                controller: 'SessionDialogController',
                 templateUrl: 'app/components/sessions/sessiondialog.html',
                 parent: angular.element(document.body),
                 targetEvent: event,
-                locals:
-                {thissession: session}
+
             });
-            //SessionDialogController.$inject = ['$mdDialog']
         };
 
     }]);
 
-sessionsModule.controller('SessionDialogController', ['$mdDialog', function($mdDialog, thissession) {
+sessionsModule.controller('SessionDialogController', ['$mdDialog', function($mdDialog) {
+    var sdc = this;
+    sdc.session = singleSession;
 
+    sdc.close = function () {
+        $mdDialog.hide();
+    };
 }]);
-
 
